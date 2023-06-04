@@ -1,23 +1,34 @@
 --[[
 -- Universal FIX for the random WAC spawn bug where some WAC entities spawn underground and/or explode.
--- Aditional cvar tweaks include: Engine performance cvar modifier, auto maintenance on spawn, spawn frozen.
+-- Additional cvar tweaks include: Engine performance, auto maintenance on spawn, spawn frozen, aerodynamics modifiers.
 ]]--
 if SERVER then
 	CreateConVar("WACspawnTweaks_Spawn_Frozen", "0", {FCVAR_ARCHIVE},
 	"Would you like your WAC spawned frozen?")
 	
 	CreateConVar("WACspawnTweaks_Regen_Seconds", "10", {FCVAR_ARCHIVE},
-	"How many seconds should a wac recieve repair/maintenance for when first spawned", 1, 999)
+	"How many seconds should a WAC receive repair/maintenance for when first spawned", 1)
 	
 	CreateConVar("WACspawnTweaks_EnginePerf_Multiplier", "1.5", {FCVAR_ARCHIVE},
-	"Modify engine performance for newly spawned WAC. 1=Original, 1.5=Good, 3=Arcade, 10=Pain", 1, 10)
+	"Modify engine performance for newly spawned WAC. 1=Original, 1.5=Good, 3=Arcade, 10=Kerbal", 1, 10)
 	
+	CreateConVar("WACspawnTweaks_AirThickness_Multiplier", "1", {FCVAR_ARCHIVE},
+	"Modify how stable newly spawned WAC is on its path. Higher means less drift. 1=Original, 2=Casual, 100=Flying in honey", 1, 100)
+	
+	--advanced cvars
+	CreateConVar("WACspawnTweaks_PointForward_Strength", "1", {FCVAR_ARCHIVE},
+	"Modify a newly spawned WAC's desire to point forward while moving. 0.5=Top Gun Maverick, 1=Original", 0, 1)
+	
+	CreateConVar("WACspawnTweaks_Self-Lift_Strength", "1", {FCVAR_ARCHIVE},
+	"Modify a newly spawned WAC's desire to lift while moving. 0.5=Top Gun Maverick, 1=Original", 0, 1)
+	
+	CreateConVar("WACspawnTweaks_RotationDrag_Strength", "1", {FCVAR_ARCHIVE},
+	"Modify a newly spawned WAC's angular drag. 1=Original 10=Cruse ship", 0, 10)
+		
 	hook.Add( "PlayerSpawnedSENT", "WACspawnTweaks", function(ply, ent)
 	
-		--only apply if class string starts with 'wac_' and is an aircraft
-		if string.sub(ent:GetClass(), 1, 4) ~= "wac_" then return end
-		if ent.ClassName == "wac_aircraft_maintenance" then return end
-		if ent.ClassName == "wac_seat_connector" then return end
+		--only apply to WAC aircraft
+		if not ent.isWacAircraft then return end
 		
 		--get the height of the thing and create an offset
 		local minBounds, maxBounds = ent:GetCollisionBounds()
@@ -52,19 +63,41 @@ if SERVER then
 			--apply tweaks
 			timer.Simple(2, function()
 				if IsValid(ent) then
+				
+					--values we will edit
 					local engineThrust = ent.Agility.Thrust
-					local engineForce = ent.EngineForce
-					local multiplier = GetConVar("WACspawnTweaks_EnginePerf_Multiplier"):GetFloat()
+					local engineForce = ent.EngineForce					
 					
+					--get configs
+					local engineMultiplier = GetConVar("WACspawnTweaks_EnginePerf_Multiplier"):GetFloat()
+					local railMultiplier = GetConVar("WACspawnTweaks_AirThickness_Multiplier"):GetFloat()
+					local rotationStrength = GetConVar("WACspawnTweaks_PointForward_Strength"):GetFloat() --advanced
+					local liftStrength = GetConVar("WACspawnTweaks_Self-Lift_Strength"):GetFloat() --advanced
+					local angleDragStrength = GetConVar("WACspawnTweaks_RotationDrag_Strength"):GetFloat() --advanced
+					
+					--apply engine tweaks
 					if engineThrust <= 1 then
 						--its probably a heli
-						ent.EngineForce = engineForce * multiplier
-						--print("new engineForce:", engineForce * multiplier)
+						ent.EngineForce = engineForce * engineMultiplier
 					else
 						--its probably a plane
-						ent.Agility.Thrust = engineThrust * multiplier
-						--print("new engineThrust:", engineThrust * multiplier)
+						ent.Agility.Thrust = engineThrust * engineMultiplier
 					end
+					
+					--apply aerodynamic tweaks
+					ent.Aerodynamics.Rail = ent.Aerodynamics.Rail * railMultiplier
+					ent.Aerodynamics.aeroRailRotor = ent.Aerodynamics.RailRotor * railMultiplier 
+					
+					--advanced aerodynamic tweaks
+					ent.Aerodynamics.Rotation.Front = ent.Aerodynamics.Rotation.Front * rotationStrength
+					ent.Aerodynamics.Rotation.Right = ent.Aerodynamics.Rotation.Right * rotationStrength --yaw strength
+					ent.Aerodynamics.Rotation.Top = ent.Aerodynamics.Rotation.Top * rotationStrength
+					
+					ent.Aerodynamics.Lift.Front = ent.Aerodynamics.Lift.Front * liftStrength
+					ent.Aerodynamics.Lift.Right = ent.Aerodynamics.Lift.Right * liftStrength
+					ent.Aerodynamics.Lift.Top = ent.Aerodynamics.Lift.Top * liftStrength
+					
+					ent.Aerodynamics.AngleDrag = ent.Aerodynamics.AngleDrag * angleDragStrength 
 				end
 			end)
 		end
