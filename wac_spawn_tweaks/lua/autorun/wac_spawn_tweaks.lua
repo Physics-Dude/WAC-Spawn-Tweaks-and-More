@@ -9,8 +9,8 @@ if SERVER then
 	CreateConVar("WACspawnTweaks_Regen_Seconds", "10", {FCVAR_ARCHIVE},
 	"How many seconds should a wac recieve repair/maintenance for when first spawned", 1, 999)
 	
-	CreateConVar("WACspawnTweaks_EnginePerf_Multiplier", "2", {FCVAR_ARCHIVE},
-	"Modify engine performance for newly spawned WAC. 1=Original, [2]=Good, 5=Arcade, 10=Pain", 1, 10)
+	CreateConVar("WACspawnTweaks_EnginePerf_Multiplier", "1.5", {FCVAR_ARCHIVE},
+	"Modify engine performance for newly spawned WAC. 1=Original, 1.5=Good, 3=Arcade, 10=Pain", 1, 10)
 	
 	hook.Add( "PlayerSpawnedSENT", "WACspawnTweaks", function(ply, ent)
 	
@@ -54,7 +54,7 @@ if SERVER then
 				if IsValid(ent) then
 					local engineThrust = ent.Agility.Thrust
 					local engineForce = ent.EngineForce
-					local multiplier = GetConVar("WACspawnTweaks_EnginePerf_Multiplier"):GetInt()
+					local multiplier = GetConVar("WACspawnTweaks_EnginePerf_Multiplier"):GetFloat()
 					
 					if engineThrust <= 1 then
 						--its probably a heli
