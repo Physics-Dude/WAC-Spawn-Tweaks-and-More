@@ -16,12 +16,32 @@ This addon fixes that and places the spawned WAC just above the ground using a p
 - Works in single and multiplayer on all surfaces.
 - It's just one small LUA file.
 
-**Console Variable Config Settings:**
+
+**General Console Config Settings:**
 - _WACspawnTweaks_Spawn_Frozen 0_  
-Spawn WAC frozen? (0-1)
+    Spawn WAC frozen? (0-1)
 
 - _WACspawnTweaks_Regen_Seconds 10_  
-Force self-repair for this many seconds after WAC is spawned. (1-999)
+    Force self-repair for this many seconds after WAC is spawned. (1-999999)
 
-- _WACspawnTweaks_EnginePerf_Multiplier 2_  
-Universal Engine power multiplier for newly spawned WAC. (1=Original, [2]=Good, 5=Arcade, 10=Pain)
+- _WACspawnTweaks_EnginePerf_Multiplier 1.5_  
+    Universal Engine power multiplier for newly spawned WAC.  
+    (1=Original, 1.5=Good, 3=Arcade, 10=Kerbal)
+
+- _WACspawnTweaks_AirThickness_Multiplier 1_  
+    Modify how stable newly spawned WAC is on its path. Higher means less drift.  
+    (1=Original, 2=Casual, 100=Flying in honey)
+
+
+**Advanced Console Config Settings:**
+- _WACspawnTweaks_PointForward_Strength 1_  
+    Modify a newly spawned WAC's desire to point forward while moving.  
+    (0.5=Top Gun Maverick, 1=Original)
+
+- _WACspawnTweaks_Self-Lift_Strength 1_  
+    Modify a newly spawned WAC's desire to lift while moving.  
+    (0.5=Top Gun Maverick, 1=Original)
+
+- _WACspawnTweaks_RotationDrag_Strength 1_  
+    Modify a newly spawned WAC's angular drag.  
+    (1=Original 10=Cruse ship)
