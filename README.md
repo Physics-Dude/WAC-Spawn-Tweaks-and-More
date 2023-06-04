@@ -12,7 +12,7 @@ This addon fixes that and places the spawned WAC just above the ground using a p
 
 **Bonus Features:**
 - Health regen when spawned! (defaults to just 10 seconds)
-- Engine Performance modifier. (defaults to 2x original power)
+- Engine Performance modifier. (defaults to 1.5x original power)
 - Works in single and multiplayer on all surfaces.
 - It's just one small LUA file.
 
