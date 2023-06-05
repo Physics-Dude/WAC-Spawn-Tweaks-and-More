@@ -12,18 +12,19 @@ if SERVER then
 	CreateConVar("WACspawnTweaks_EnginePerf_Multiplier", "1.5", {FCVAR_ARCHIVE},
 	"Modify engine performance for newly spawned WAC. 1=Original, 1.5=Good, 3=Arcade, 10=Kerbal", 1, 10)
 	
-	CreateConVar("WACspawnTweaks_AirThickness_Multiplier", "1", {FCVAR_ARCHIVE},
-	"Modify how stable newly spawned WAC is on its path. Higher means less drift. 1=Original, 2=Casual, 100=Flying in honey", 1, 100)
+	CreateConVar("WACspawnTweaks_AngleDrag_Multiplier", "2", {FCVAR_ARCHIVE},
+	"Modify a newly spawned WAC's angular drag. 1=Original, 2=More realistic, 10=Cruse ship", 0, 10)
 	
 	--advanced cvars
-	CreateConVar("WACspawnTweaks_PointForward_Strength", "1", {FCVAR_ARCHIVE},
+	CreateConVar("WACspawnTweaks_Rail_Multiplier", "1", {FCVAR_ARCHIVE},
+	" Modify how stable newly spawned WAC is on its path (aka Rail). Higher means less drift. 1=Original, 2=Casual, 100=Flying in honey", 1, 100)
+	
+	CreateConVar("WACspawnTweaks_PointForward_Ratio", "1", {FCVAR_ARCHIVE},
 	"Modify a newly spawned WAC's desire to point forward while moving. 0.5=Top Gun Maverick, 1=Original", 0, 1)
 	
-	CreateConVar("WACspawnTweaks_Self-Lift_Strength", "1", {FCVAR_ARCHIVE},
+	CreateConVar("WACspawnTweaks_Self-Lift_Ratio", "1", {FCVAR_ARCHIVE},
 	"Modify a newly spawned WAC's desire to lift while moving. 0.5=Top Gun Maverick, 1=Original", 0, 1)
 	
-	CreateConVar("WACspawnTweaks_RotationDrag_Strength", "1", {FCVAR_ARCHIVE},
-	"Modify a newly spawned WAC's angular drag. 1=Original 10=Cruse ship", 0, 10)
 		
 	hook.Add( "PlayerSpawnedSENT", "WACspawnTweaks", function(ply, ent)
 	
@@ -70,10 +71,10 @@ if SERVER then
 					
 					--get configs
 					local engineMultiplier = GetConVar("WACspawnTweaks_EnginePerf_Multiplier"):GetFloat()
-					local railMultiplier = GetConVar("WACspawnTweaks_AirThickness_Multiplier"):GetFloat()
-					local rotationStrength = GetConVar("WACspawnTweaks_PointForward_Strength"):GetFloat() --advanced
-					local liftStrength = GetConVar("WACspawnTweaks_Self-Lift_Strength"):GetFloat() --advanced
-					local angleDragStrength = GetConVar("WACspawnTweaks_RotationDrag_Strength"):GetFloat() --advanced
+					local angleDragStrength = GetConVar("WACspawnTweaks_AngleDrag_Multiplier"):GetFloat()
+					local railMultiplier = GetConVar("WACspawnTweaks_Rail_Multiplier"):GetFloat() --advanced
+					local rotationStrength = GetConVar("WACspawnTweaks_PointForward_Ratio"):GetFloat() --advanced
+					local liftStrength = GetConVar("WACspawnTweaks_Self-Lift_Ratio"):GetFloat() --advanced
 					
 					--apply engine tweaks
 					if engineThrust <= 1 then
@@ -85,10 +86,12 @@ if SERVER then
 					end
 					
 					--apply aerodynamic tweaks
+					ent.Aerodynamics.AngleDrag = ent.Aerodynamics.AngleDrag * angleDragStrength 
+					
+					--advanced aerodynamic tweaks
 					ent.Aerodynamics.Rail = ent.Aerodynamics.Rail * railMultiplier
 					ent.Aerodynamics.aeroRailRotor = ent.Aerodynamics.RailRotor * railMultiplier 
 					
-					--advanced aerodynamic tweaks
 					ent.Aerodynamics.Rotation.Front = ent.Aerodynamics.Rotation.Front * rotationStrength
 					ent.Aerodynamics.Rotation.Right = ent.Aerodynamics.Rotation.Right * rotationStrength --yaw strength
 					ent.Aerodynamics.Rotation.Top = ent.Aerodynamics.Rotation.Top * rotationStrength
@@ -97,7 +100,6 @@ if SERVER then
 					ent.Aerodynamics.Lift.Right = ent.Aerodynamics.Lift.Right * liftStrength
 					ent.Aerodynamics.Lift.Top = ent.Aerodynamics.Lift.Top * liftStrength
 					
-					ent.Aerodynamics.AngleDrag = ent.Aerodynamics.AngleDrag * angleDragStrength 
 				end
 			end)
 		end
