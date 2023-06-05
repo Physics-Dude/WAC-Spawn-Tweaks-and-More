@@ -44,4 +44,4 @@ This addon fixes that and places the spawned WAC just above the ground using a p
 
 - _WACspawnTweaks_RotationDrag_Strength 1_  
     Modify a newly spawned WAC's angular drag.  
-    (1=Original 10=Cruse ship)
+    (1=Original, 2=More realistic, 10=Cruse ship)
