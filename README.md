@@ -10,7 +10,7 @@ The old but objectively awesome WAC Aircraft addons sometimes spawn aircraft und
 
 This addon fixes that and places the spawned WAC just above the ground using a path trace.
 
-It also adds a ton of config options for singleplayer and server owners! Want to tweak power, stability, lift, drag, and more? This addon will let you do all that and works for all WAC Aircraft new and old!
+It also adds a ton of config options for singleplayer and server owners! Want to tweak power, stability, lift, drag, and more? This addon will let you do all that and works for all WAC Aircraft!
 
 **Bonus Features:**
 - Health regen when spawned!
