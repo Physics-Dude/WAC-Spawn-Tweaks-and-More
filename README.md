@@ -11,9 +11,10 @@ The old but objectively awesome WAC Aircraft addons sometimes spawn aircraft und
 This addon fixes that and places the spawned WAC just above the ground using a path trace.
 
 **Bonus Features:**
-- Health regen when spawned! (defaults to just 10 seconds)
+- Health regen when spawned!
 - Engine Performance modifier. (defaults to 1.5x original power)
-- Works in single and multiplayer on all surfaces.
+- Angular Drag modifier. (defaults to 2x for more relaxed control)
+- Works in single and multiplayer.
 - It's just one small LUA file.
 
 
@@ -28,20 +29,21 @@ This addon fixes that and places the spawned WAC just above the ground using a p
     Universal Engine power multiplier for newly spawned WAC.  
     (1=Original, 1.5=Good, 3=Arcade, 10=Kerbal)
 
-- _WACspawnTweaks_AirThickness_Multiplier 1_  
-    Modify how stable newly spawned WAC is on its path. Higher means less drift.  
+- _WACspawnTweaks_AngleDrag_Multiplier 2_  
+    Modify a newly spawned WAC's angular drag.  
+    (1=Original, 2=More realistic, 10=Cruse ship)
+
+
+Advanced Config Settings:
+
+- _WACspawnTweaks_Rail_Multiplier 1_  
+    Modify how stable newly spawned WAC is on its path (aka Rail). Higher means less drift.  
     (1=Original, 2=Casual, 100=Flying in honey)
 
-
-**Advanced Console Config Settings:**
-- _WACspawnTweaks_PointForward_Strength 1_  
+- _WACspawnTweaks_PointForward_Ratio 1_  
     Modify a newly spawned WAC's desire to point forward while moving.  
     (0.5=Top Gun Maverick, 1=Original)
 
-- _WACspawnTweaks_Self-Lift_Strength 1_  
+- _WACspawnTweaks_Self-Lift_Ratio 1_  
     Modify a newly spawned WAC's desire to lift while moving.  
     (0.5=Top Gun Maverick, 1=Original)
-
-- _WACspawnTweaks_RotationDrag_Strength 1_  
-    Modify a newly spawned WAC's angular drag.  
-    (1=Original, 2=More realistic, 10=Cruse ship)
